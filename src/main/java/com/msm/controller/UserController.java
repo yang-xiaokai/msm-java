@@ -16,12 +16,21 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    //测试
+    //测试框架
     @RequestMapping("ceshi")
     public List<User> ceshi(User user){
         List<User> users = userService.selUser(user);
         return users;
     }
+    //登录用户
+
+
+    //注册用户(判断用户名是否存在,存在则提示,不存在则注册)
+
+
+    //注销用户
+
+
 
 
 
