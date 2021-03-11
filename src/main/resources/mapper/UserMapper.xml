@@ -7,6 +7,10 @@
             select  * from msm_user
     </select>
 
+    <select id="selectByName" resultType="User">
+           select * from msm_user mu where mu.username like '%{username}%'
+    </select>
+
 
 
 </mapper>

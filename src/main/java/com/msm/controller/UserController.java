@@ -3,6 +3,7 @@ package com.msm.controller;
 import com.msm.entity.User;
 import com.msm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,13 @@ public class UserController {
         return users;
     }
     //登录用户
+    @RequestMapping("login")
+    public int login(@RequestBody User user){
+       int i=userService.selectByName(user.getUserName());
+
+        return i;
+
+    }
 
 
     //注册用户(判断用户名是否存在,存在则提示,不存在则注册)
