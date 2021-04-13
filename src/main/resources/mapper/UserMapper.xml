@@ -3,12 +3,29 @@
 
 <mapper namespace="com.msm.mapper.UserMapper">
 
-    <select id="selUser" resultType="User">
+    <select id="selUser" resultType="com.msm.entity.User">
             select  * from msm_user
     </select>
 
-    <select id="selectByName" resultType="User">
-           select * from msm_user mu where mu.username like '%{username}%'
+    <select id="selectByName" resultType="com.msm.entity.User">
+           select * from msm_user
+            <where>
+                1=1
+                <if test="userName!=null and userName!='' ">
+                    and userName like concat('%',#{userName},'%')
+                </if>
+                <if test="passWord!=null and passWord!='' ">
+                    and passWord like concat('%',#{passWord},'%')
+                </if>
+
+            </where>
+
+    </select>
+
+
+    <select id="selectUsers" resultType="com.msm.entity.User">
+        select * from msm_user
+
     </select>
 
 

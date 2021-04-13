@@ -1,13 +1,21 @@
 package com.msm.service;
 
-import com.baomidou.mybatisplus.service.IService;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.msm.config.Result;
 import com.msm.entity.User;
-import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
-public interface UserService  {
+public interface UserService  extends IService<User> {
      List<User> selUser(User user);
 
-     int selectByName(String userName);
+     User selectByName(String userName,String passWord);
+
+     List<User> selectUsers(User user);
+
+    public Result login(User user);
+
+    //Result register(User user);
 }
