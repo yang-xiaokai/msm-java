@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -73,216 +74,28 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        return new Result(400,"登录失败","");
+        return new Result(400,"登录失败","用户名密码错误");
     }
 
     @Override
-    public boolean save(User entity) {
-        return false;
-    }
+    public Result insert(User user) {
+        if (StringUtils.isEmpty(user.getUserName())){
+            System.out.println(user.getUserName());
+            return new Result(400,"用户名不能为空","");
+        }
+        if (StringUtils.isEmpty(user.getPassWord())){
+            System.out.println(user.getPassWord());
+            return new Result(400,"密码不能为空","");
+        }
+        user.setUserName(user.getUserName());
+        user.setPassWord(user.getPassWord());
+        user.setLoginTime(new Date());
+        user.setLastTime(new Date());
+        user.setUserEmail(user.getUserEmail());
+        user.setUserTel(user.getUserTel());
+        userMapper.save(user);
 
-    @Override
-    public boolean saveBatch(Collection<User> entityList, int batchSize) {
-        return false;
-    }
 
-    @Override
-    public boolean saveOrUpdateBatch(Collection<User> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean removeById(Serializable id) {
-        return false;
-    }
-
-    @Override
-    public boolean removeByMap(Map<String, Object> columnMap) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Wrapper<User> queryWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean removeByIds(Collection<? extends Serializable> idList) {
-        return false;
-    }
-
-    @Override
-    public boolean updateById(User entity) {
-        return false;
-    }
-
-    @Override
-    public boolean update(User entity, Wrapper<User> updateWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<User> entityList, int batchSize) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdate(User entity) {
-        return false;
-    }
-
-    @Override
-    public User getById(Serializable id) {
-        return null;
-    }
-
-    @Override
-    public Collection<User> listByIds(Collection<? extends Serializable> idList) {
-        return null;
-    }
-
-    @Override
-    public Collection<User> listByMap(Map<String, Object> columnMap) {
-        return null;
-    }
-
-    @Override
-    public User getOne(Wrapper<User> queryWrapper, boolean throwEx) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> V getObj(Wrapper<User> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public int count(Wrapper<User> queryWrapper) {
-        return 0;
-    }
-
-    @Override
-    public List<User> list(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public IPage<User> page(IPage<User> page, Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> listMaps(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public <V> List<V> listObjs(Wrapper<User> queryWrapper, Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public IPage<Map<String, Object>> pageMaps(IPage<User> page, Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public BaseMapper<User> getBaseMapper() {
-        return null;
-    }
-
-    @Override
-    public boolean saveBatch(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public boolean saveOrUpdateBatch(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public boolean update(Wrapper<User> updateWrapper) {
-        return false;
-    }
-
-    @Override
-    public boolean updateBatchById(Collection<User> entityList) {
-        return false;
-    }
-
-    @Override
-    public User getOne(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public int count() {
-        return 0;
-    }
-
-    @Override
-    public List<User> list() {
-        return null;
-    }
-
-    @Override
-    public IPage<User> page(IPage<User> page) {
-        return null;
-    }
-
-    @Override
-    public List<Map<String, Object>> listMaps() {
-        return null;
-    }
-
-    @Override
-    public List<Object> listObjs() {
-        return null;
-    }
-
-    @Override
-    public <V> List<V> listObjs(Function<? super Object, V> mapper) {
-        return null;
-    }
-
-    @Override
-    public List<Object> listObjs(Wrapper<User> queryWrapper) {
-        return null;
-    }
-
-    @Override
-    public IPage<Map<String, Object>> pageMaps(IPage<User> page) {
-        return null;
-    }
-
-    @Override
-    public QueryChainWrapper<User> query() {
-        return null;
-    }
-
-    @Override
-    public LambdaQueryChainWrapper<User> lambdaQuery() {
-        return null;
-    }
-
-    @Override
-    public UpdateChainWrapper<User> update() {
-        return null;
-    }
-
-    @Override
-    public LambdaUpdateChainWrapper<User> lambdaUpdate() {
-        return null;
-    }
-
-    @Override
-    public boolean saveOrUpdate(User entity, Wrapper<User> updateWrapper) {
-        return false;
+        return new Result(200,"注册成功","");
     }
 }

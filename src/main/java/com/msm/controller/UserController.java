@@ -50,12 +50,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public boolean register(@RequestBody User user){
-        System.out.println(user.getUserName());
-        user.setLoginTime(new Date());
+    public Result register(@RequestBody User user){
+        String userName = user.getUserName();
+        String passWord = user.getPassWord();
+        logger.info("userName:"+userName+"  password:"+passWord);
 
-        boolean save = userService.save(user);
-        return  save;
+        return  userService.insert(user);
     }
     //查询用户
     @PostMapping(value = "/selectOneByName")
@@ -70,6 +70,10 @@ public class UserController {
 
         return  new Result(400,"查询失败","该用户不存在");
     }
+    //根据用户查询数据
+    //admin是全查   其余的只显示本人的
+
+
 
 
 

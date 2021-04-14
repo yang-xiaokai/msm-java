@@ -28,6 +28,15 @@
 
     </select>
 
+    <insert id="save" parameterType="com.msm.entity.User">
+        insert into
+            msm_user
+                (userName, passWord, loginTime, lastTime, userEmail, userTel)
+            values
+                (#{userName},#{passWord},#{loginTime},#{lastTime},#{userEmail},#{userTel})
+
+    </insert>
+
 
 
 </mapper>

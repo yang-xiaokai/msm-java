@@ -8,7 +8,7 @@ import com.msm.entity.User;
 
 import java.util.List;
 
-public interface UserService  extends IService<User> {
+public interface UserService  {
      List<User> selUser(User user);
 
      User selectByName(String userName,String passWord);
@@ -16,6 +16,8 @@ public interface UserService  extends IService<User> {
      List<User> selectUsers(User user);
 
     public Result login(User user);
+
+    Result insert(User user);
 
     //Result register(User user);
 }

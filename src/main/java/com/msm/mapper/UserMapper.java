@@ -16,4 +16,6 @@ public interface UserMapper  extends BaseMapper<User> {
     List<User> selectUsers(User user);
 
     User selectOne(QueryWrapper<User> queryWrapper);
+
+    void save(User user);
 }
