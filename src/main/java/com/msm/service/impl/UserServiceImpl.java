@@ -87,14 +87,22 @@ public class UserServiceImpl implements UserService {
             System.out.println(user.getPassWord());
             return new Result(400,"密码不能为空","");
         }
-        user.setUserName(user.getUserName());
-        user.setPassWord(user.getPassWord());
-        user.setLoginTime(new Date());
-        user.setLastTime(new Date());
-        user.setUserEmail(user.getUserEmail());
-        user.setUserTel(user.getUserTel());
-        userMapper.save(user);
+        String userName = user.getUserName();
+        //去数据库查询用户名是否存在
+        User user1 = userMapper.selectByNameRegi(userName);
 
+        if(user1!=null){
+
+            return new Result(400,"用户名重复","");
+        }
+        User userna= new User();
+        userna.setUserName(userName);
+        userna.setPassWord(user.getPassWord());
+        userna.setLoginTime(new Date());
+        userna.setLastTime(new Date());
+        userna.setUserEmail(user.getUserEmail());
+        userna.setUserTel(user.getUserTel());
+        userMapper.save(userna);
 
         return new Result(200,"注册成功","");
     }

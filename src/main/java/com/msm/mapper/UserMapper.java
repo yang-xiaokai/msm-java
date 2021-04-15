@@ -18,4 +18,6 @@ public interface UserMapper  extends BaseMapper<User> {
     User selectOne(QueryWrapper<User> queryWrapper);
 
     void save(User user);
+
+    User selectByNameRegi(@Param("userName") String userName);
 }

@@ -37,6 +37,9 @@
 
     </insert>
 
+    <select id="selectByNameRegi" resultType="com.msm.entity.User">
+            select * from msm_user where userName like '%${userName}%'
+    </select>
 
 
 </mapper>
