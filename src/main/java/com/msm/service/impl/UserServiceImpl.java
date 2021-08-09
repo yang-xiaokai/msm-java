@@ -1,32 +1,19 @@
 package com.msm.service.impl;
 
-
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.query.impl.QueryChainWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.LambdaUpdateChainWrapper;
-import com.baomidou.mybatisplus.extension.service.additional.update.impl.UpdateChainWrapper;
 import com.msm.config.Result;
 import com.msm.entity.User;
 import com.msm.mapper.UserMapper;
 import com.msm.service.UserService;
+import com.msm.util.Md5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-
-import javax.annotation.Resource;
-import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,40 +40,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result login(User user) {
-        if (StringUtils.isEmpty(user.getUserName())){
-            System.out.println(user.getUserName());
-            return new Result(400,"用户名不能为空","");
-        }
-        if (StringUtils.isEmpty(user.getPassWord())){
-            System.out.println(user.getPassWord());
-            return new Result(400,"密码不能为空","");
-        }
-        //查询用户
-//        QueryWrapper<User> wrapper = new QueryWrapper();
-//        wrapper.eq("userName",user.getUserName());
+
         String userName = user.getUserName();
         String passWord = user.getPassWord();
-        User us = userMapper.selectByName(userName,passWord);
-        if(us!=null){
+        User i=userMapper.selectByName(userName,Md5Utils.md5(passWord));
+        if(StringUtils.isEmpty(i)){
 
-            return new Result(200,"登录成功",us);
-
+            return new Result(400,"登录失败","用户名不存在");
         }
-
-
-        return new Result(400,"登录失败","用户名密码错误");
+        return new Result(200,"登录成功",user);
     }
 
     @Override
+    @Transactional
     public Result insert(User user) {
-        if (StringUtils.isEmpty(user.getUserName())){
-            System.out.println(user.getUserName());
-            return new Result(400,"用户名不能为空","");
-        }
-        if (StringUtils.isEmpty(user.getPassWord())){
-            System.out.println(user.getPassWord());
-            return new Result(400,"密码不能为空","");
-        }
         String userName = user.getUserName();
         //去数据库查询用户名是否存在
         User user1 = userMapper.selectByNameRegi(userName);
@@ -97,13 +64,37 @@ public class UserServiceImpl implements UserService {
         }
         User userna= new User();
         userna.setUserName(userName);
-        userna.setPassWord(user.getPassWord());
+        userna.setPassWord(Md5Utils.md5(user.getPassWord()));
         userna.setLoginTime(new Date());
         userna.setLastTime(new Date());
         userna.setUserEmail(user.getUserEmail());
         userna.setUserTel(user.getUserTel());
-        userMapper.save(userna);
+        int save = userMapper.save(userna);
+        if(StringUtils.isEmpty(save)){
+            return new Result(400,"注册失败","");
+        }
 
-        return new Result(200,"注册成功","");
+        return new Result(200,"注册成功",userna);
+
+    }
+
+    @Override
+    public int deleteByid(String uId) {
+        return userMapper.deleteByUid(uId);
+    }
+
+    @Override
+    public Result updateByUid(User user) {
+        String uId = user.getuId();
+        user.setUserName(user.getUserName());
+        user.setUserEmail(user.getUserEmail());
+        user.setUserTel(user.getUserTel());
+        user.setLastTime(new Date());
+        int up=userMapper.updateByUid(uId);
+        if(StringUtils.isEmpty(up)){
+            return new Result(400,"修改失败","");
+        }
+
+        return new Result(200,"修改成功",user);
     }
 }

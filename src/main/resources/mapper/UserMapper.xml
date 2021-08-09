@@ -41,5 +41,20 @@
             select * from msm_user where userName like '%${userName}%'
     </select>
 
+    <delete id="deleteByUid">
+        delete from msm_user where uid=#{uId}
+
+    </delete>
+
+    <update id="updateByUid">
+        update
+            set
+                msm_user
+            values
+                (userName=#{userName},userEmail=#{userEmail},userTel=#{userTel})
+            where
+                uid=#{uId}
+    </update>
+
 
 </mapper>
